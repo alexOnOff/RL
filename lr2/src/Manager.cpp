@@ -45,9 +45,15 @@ void Manager::TryConcreteMoveAgent(MoveType type)
         break;
     }
 
+    if(CheckMagicCells()) return;
+
     if (CheckNewCoordinates(xIncr, yIncr))
     {
         _agent->SetCoordinates(_agent->GetX() + xIncr, _agent->GetY() + yIncr);
+    }
+    else
+    {
+        _currentReward += _punishment;
     }
         
 }
@@ -71,6 +77,11 @@ void Manager::PrintCurrentState()
     cout << endl;
 }
 
+void Manager::PrintCurrentReward()
+{
+    cout << "Current reward : " << _currentReward << endl;
+}
+
 bool Manager::CheckNewCoordinates(int xIncr, int yIncr)
 {
     if(_agent->GetX() + xIncr < 0 || _agent->GetX() + xIncr > _env->GetRows()-1)
@@ -79,4 +90,23 @@ bool Manager::CheckNewCoordinates(int xIncr, int yIncr)
         return false;
     else 
         return true;
+}
+
+bool Manager::CheckMagicCells()
+{
+    if(MagicCells.empty())
+        return false;
+
+    for(auto &cell : MagicCells)
+    {
+        if (cell == _agent)
+        {
+            _agent->SetCoordinates(cell.GetXDest(), cell.GetYDest());
+            _currentReward += cell.GetReward();
+
+            return true;
+        }
+    }
+
+    return false;
 }
