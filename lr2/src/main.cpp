@@ -13,13 +13,34 @@ int main()
     manager->MagicCells.push_back(MagicCell(1, 0, 1, 4, 10));
     manager->MagicCells.push_back(MagicCell(3, 0, 3, 2, 5));  
 
-    cout << "=================== START ===================" << endl;
+    // Проверяем выполнение уравнения Беллмана
+    //cout << "=================== START ===================" << endl;
+    //manager->SetStateValues5x5();
+    //manager->PrintCurrentStateValues();
+    //cout << "=================== STUDING ===================" << endl;
+    //manager->StudyOnce();
+    //manager->PrintCurrentStateValues();
 
+    // Обучаем с 1 итерацией
+    cout << "=================== START ===================" << endl;
+    manager->PrintCurrentStateValues();
+    cout << "=================== STUDING ===================" << endl;
+    manager->Study(1);
     manager->PrintCurrentStateValues();
 
-    cout << "=================== STUDING ===================" << endl;
 
-    manager->Study(100000);
+    // Обучаем с 100 итерацией
+    cout << "=================== START ===================" << endl;
+    manager->PrintCurrentStateValues();
+    cout << "=================== STUDING ===================" << endl;
+    manager->Study(100);
+    manager->PrintCurrentStateValues();
+
+    // Обучаем с 10000 итерацией
+    cout << "=================== START ===================" << endl;
+    manager->PrintCurrentStateValues();
+    cout << "=================== STUDING ===================" << endl;
+    manager->Study(10000);
     manager->PrintCurrentStateValues();
 
     return 0;
