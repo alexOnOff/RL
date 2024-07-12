@@ -6,6 +6,7 @@ namespace GridWorld
     class Cell
     {
     public:
+        Cell();
         Cell(uint16_t x, uint16_t y);
         ~Cell();
 

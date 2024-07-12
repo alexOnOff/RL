@@ -5,7 +5,7 @@ using namespace std;
 
 namespace GridWorld
 {
-    enum class MoveType {Up, Down, Left, Right};
+    enum class MoveType {Up, Down, Left, Right, Undefined};
 
     class Agent
     {

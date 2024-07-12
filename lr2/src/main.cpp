@@ -15,23 +15,12 @@ int main()
 
     cout << "=================== START ===================" << endl;
 
-    manager->PrintCurrentState();
-    manager->PrintCurrentReward();
-    manager->TryConcreteMoveAgent(MoveType::Right);
-    manager->PrintCurrentState();
-    manager->PrintCurrentReward();
-    manager->TryConcreteMoveAgent(MoveType::Down);
-    manager->PrintCurrentState();
-    manager->PrintCurrentReward();
-    manager->TryConcreteMoveAgent(MoveType::Left);
-    manager->PrintCurrentState();
-    manager->PrintCurrentReward();
-    manager->TryConcreteMoveAgent(MoveType::Left);
-    manager->PrintCurrentState();
-    manager->PrintCurrentReward();
+    manager->PrintCurrentStateValues();
 
-    
+    cout << "=================== STUDING ===================" << endl;
 
+    manager->Study(100000);
+    manager->PrintCurrentStateValues();
 
     return 0;
 }
