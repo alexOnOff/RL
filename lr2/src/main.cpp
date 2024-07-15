@@ -1,6 +1,7 @@
 #include "iostream"
 #include "time.h"
 #include "Manager.h"
+#include "LeftRightChoise.h"
 
 using namespace std;
 using namespace GridWorld;
@@ -22,26 +23,39 @@ int main()
     //manager->PrintCurrentStateValues();
 
     // Обучаем с 1 итерацией
-    cout << "=================== START ===================" << endl;
-    manager->PrintCurrentStateValues();
-    cout << "=================== STUDING ===================" << endl;
-    manager->Study(1);
-    manager->PrintCurrentStateValues();
+    //cout << "=================== START ===================" << endl;
+    //manager->PrintCurrentStateValues();
+    //cout << "=================== STUDING ===================" << endl;
+    //manager->Study(1);
+    //manager->PrintCurrentStateValues();
 
 
-    // Обучаем с 100 итерацией
-    cout << "=================== START ===================" << endl;
-    manager->PrintCurrentStateValues();
-    cout << "=================== STUDING ===================" << endl;
-    manager->Study(100);
-    manager->PrintCurrentStateValues();
+    //// Обучаем с 100 итерацией
+    //cout << "=================== START ===================" << endl;
+    //manager->PrintCurrentStateValues();
+    //cout << "=================== STUDING ===================" << endl;
+    //manager->Study(100);
+    //manager->PrintCurrentStateValues();
 
-    // Обучаем с 10000 итерацией
-    cout << "=================== START ===================" << endl;
-    manager->PrintCurrentStateValues();
-    cout << "=================== STUDING ===================" << endl;
-    manager->Study(10000);
-    manager->PrintCurrentStateValues();
+    //// Обучаем с 10000 итерацией
+    //cout << "=================== START ===================" << endl;
+    //manager->PrintCurrentStateValues();
+    //cout << "=================== STUDING ===================" << endl;
+    //manager->Study(10000);
+    //manager->PrintCurrentStateValues();
+
+
+    //cout << "=================== START ===================" << endl;
+    //manager->PrintCurrentStateValues();
+    //cout << "=================== STUDING ===================" << endl;
+    //manager->StudyOptimal(10000);
+    //manager->PrintCurrentStateValues();
+
+    LeftRight::Graph* graph = new LeftRight::Graph();
+    cout << "Left Rule" << endl;
+    graph->Move(LeftRight::Choise::Left);
+    cout << "Right Rule" << endl;
+    graph->Move(LeftRight::Choise::Right);
 
     return 0;
 }

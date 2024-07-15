@@ -24,6 +24,8 @@ namespace GridWorld
         void Study(int iters);
         void StudyOnce();
         void SetStateValues5x5();
+        void StudyOptimalOnce();
+        void StudyOptimal(int iters);
 
         vector<MagicCell> MagicCells;
 

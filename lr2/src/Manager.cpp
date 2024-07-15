@@ -181,6 +181,54 @@ void Manager::SetStateValues5x5()
 
 }
 
+void Manager::StudyOptimalOnce()
+{
+    for (int j = 0; j < _stateValues.size(); j++)
+    {
+        for (int i = 0; i < _stateValues[j].size(); i++)
+        {
+            float maxValue = INT16_MIN;
+            float sum = 0.0f;
+
+            for (int fooInt = (int)MoveType::Up; fooInt != (int)MoveType::Undefined; fooInt++)
+            {
+                _agent->SetCoordinates(i, j);
+                int reward = TryConcreteMoveAgent((MoveType)fooInt);
+                if (maxValue <= _stateValues[_agent->GetX()][_agent->GetY()])
+                {
+                    sum = 0.0f;
+                    maxValue = _stateValues[_agent->GetX()][_agent->GetY()];
+                }
+                else
+                {
+                    continue;
+                }
+                
+                sum += reward + _Gamma * maxValue;
+            }
+
+            _nextStateValues[i][j] =  sum;
+        }
+    }
+
+    for (int j = 0; j < _stateValues.size(); j++)
+    {
+        for (int i = 0; i < _stateValues[j].size(); i++)
+        {
+            _stateValues[i][j] = _nextStateValues[i][j];
+        }
+    }
+
+}
+
+void Manager::StudyOptimal(int iters)
+{
+    for (int i = 0; i < iters; i++)
+    {
+        StudyOptimalOnce();
+    }
+}
+
 bool Manager::CheckNewCoordinates(int xIncr, int yIncr)
 {
     if(_agent->GetX() + xIncr < 0 || _agent->GetX() + xIncr > _env->GetRows()-1)
