@@ -5,10 +5,11 @@
 
 *1. Вывести уравнения, аналогичные (3), (4) для  qπ .*
 
-**The Cauchy-Schwarz Inequality**
-
 ```math
-\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)
+q_π(s,a) = \sum_{s^`, r}p(s^`,r|s,a)[r+γ q_π(s^`)]
+```
+```math
+q_{k+1}(s) = \sum_{s^`, r}p(s^`,r|s,a)[r+γ q_k(s^`)]
 ```
 
 *2. Используя матрицу на рисунке выше для  vk  при  k=∞ , с помощью выведенных для  qπ  формул рассчитайте ценность действий через  vπ :  qπ(11,down),qπ(7,down),qπ(3,down) .*
