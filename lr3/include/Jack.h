@@ -2,6 +2,8 @@
 #include <iostream>
 #include "Office.h"
 
+using namespace std;
+
 namespace Parking
 {
     class Jack
@@ -14,6 +16,7 @@ namespace Parking
         int16_t PayCash(int16_t);
         int16_t GetCash();
         uint16_t TrackCars(Office* from, Office* to, uint16_t num);
+        void GoTrack(vector<vector<int16_t>> states, Office* officeFirst, Office* officeSecond);
         
 
     private:

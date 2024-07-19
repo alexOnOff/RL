@@ -44,4 +44,17 @@ uint16_t Jack::TrackCars(Office* source, Office* dest, uint16_t num)
     return i;
 }
 
+void Jack::GoTrack(vector<vector<int16_t>> states, Office* officeFirst, Office* officeSecond)
+{
+    auto value = states[officeFirst->GetCarNumber()][officeSecond->GetCarNumber()];
+
+    if (value < 0)
+    {
+        TrackCars(officeSecond, officeFirst, abs(value));
+    }
+    else if (value > 0)
+    {
+        TrackCars(officeFirst, officeSecond, abs(value));
+    }
+}
 

@@ -44,8 +44,7 @@ void Manager::GoDay()
 void Manager::GoNight()
 {
     // Choose strategy
-    auto tracks = _jack->TrackCars(_firstOffice, _secondOffice, 5);
-    
+    _jack->GoTrack(_stateValues.back(), _firstOffice, _secondOffice);
 }
 
 void Manager::PrintLastStateValues()
