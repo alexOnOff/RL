@@ -27,6 +27,7 @@ namespace Parking
         uint16_t MaxCanReturn();
 
         uint16_t GetCarNumber();
+        uint16_t GetCapacity();
 
     private:
         std::mt19937 gen;

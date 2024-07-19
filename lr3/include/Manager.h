@@ -13,14 +13,14 @@ namespace Parking
 
         void GoDay();
         void GoNight();
+        void PrintLastStateValues();
 
     private:
-
-        std::poisson_distribution<uint16_t> _queryDistributionFirstOffice();
-        std::poisson_distribution<uint16_t> _returnDistribution;
         Office* _firstOffice;
         Office* _secondOffice;
         Jack* _jack;
+
+        //vector<vector<vector<int16_t>>> _stateValues;
 
         const float _Gamma = 0.9f;
         

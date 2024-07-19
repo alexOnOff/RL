@@ -74,6 +74,11 @@ uint16_t Office::GetCarNumber()
     return _carNumber;
 }
 
+uint16_t Parking::Office::GetCapacity()
+{
+    return _Capacity;
+}
+
 void Office::Take()
 {
     _carNumber--;
