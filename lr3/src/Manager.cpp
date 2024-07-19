@@ -9,18 +9,18 @@ Manager::Manager()
     _secondOffice = new Office(4,2);
     _jack = new Jack();    
 
-    //_stateValues.resize(1);
+    _stateValues.resize(1);
+    _stateValues.back().resize(_firstOffice->GetCapacity());
 
-    //_stateValues.back().resize(_firstOffice->GetCapacity());
-
-    //for (auto item: _stateValues.back())
-    //{
-    //    item.resize(_secondOffice->GetCapacity());
-    //    for (auto value: item)
-    //    {
-    //        value = 0;
-    //    }
-    //}
+    for (int i = 0; i < _firstOffice->GetCapacity(); i++)
+    {
+        _stateValues.back()[i].resize(_secondOffice->GetCapacity());
+        
+        for (int j = 0; j < _secondOffice->GetCapacity(); j++)
+        {
+            _stateValues.back()[i][j] = 0;
+        }
+    }
 }
 
 Manager::~Manager()
@@ -50,15 +50,15 @@ void Manager::GoNight()
 
 void Manager::PrintLastStateValues()
 {
-    //cout << endl << "Values:" << endl;
-    //for (auto line: _stateValues.back())
-    //{
-    //    for (auto value: line)
-    //    {
-    //        cout << value << " ";
-    //    }
-    //    cout << endl;
-    //}
-    //cout << endl;
+    cout << endl << "Values:" << endl;
+    for (auto line: _stateValues.back())
+    {
+        for (auto value: line)
+        {
+            cout << value << " ";
+        }
+        cout << endl;
+    }
+    cout << endl;
 }
 
