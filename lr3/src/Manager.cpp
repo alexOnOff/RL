@@ -9,18 +9,8 @@ Manager::Manager()
     _secondOffice = new Office(4,2);
     _jack = new Jack();    
 
-    _stateValues.resize(1);
-    _stateValues.back().resize(_firstOffice->GetCapacity());
-
-    for (int i = 0; i < _firstOffice->GetCapacity(); i++)
-    {
-        _stateValues.back()[i].resize(_secondOffice->GetCapacity());
-        
-        for (int j = 0; j < _secondOffice->GetCapacity(); j++)
-        {
-            _stateValues.back()[i][j] = 0;
-        }
-    }
+    Service::InitVectorOfMatrix(_politics, (int16_t)0, _firstOffice->GetCapacity(), _secondOffice->GetCapacity());
+    Service::InitVectorOfMatrix(_stateValues, 0.0f, _firstOffice->GetCapacity(), _secondOffice->GetCapacity());
 }
 
 Manager::~Manager()
@@ -39,25 +29,43 @@ void Manager::GoDay()
 
     // Give reward
     auto currentCash = _jack->AddCash((clientsFirst + clientsSecond) * _Reward);
+
 }
 
 void Manager::GoNight()
 {
     // Choose strategy
-    _jack->GoTrack(_stateValues.back(), _firstOffice, _secondOffice);
+    _jack->GoTrack(_politics.back(), _firstOffice, _secondOffice);
+
+    //UpdateTables
+    vector<vector<int16_t>> newValues;
+
+    newValues.resize(_firstOffice->GetCapacity());
+
+    for (int i = 0; i < _firstOffice->GetCapacity(); i++)
+    {
+        newValues[i].resize(_secondOffice->GetCapacity());
+
+        for (int j = 0; j < _secondOffice->GetCapacity(); j++)
+        {
+            newValues[i][j] = 0;
+        }
+    }
+
+    _politics.push_back(newValues);
+
+    _dayNumber++;
 }
 
 void Manager::PrintLastStateValues()
 {
     cout << endl << "Values:" << endl;
-    for (auto line: _stateValues.back())
-    {
-        for (auto value: line)
-        {
-            cout << value << " ";
-        }
-        cout << endl;
-    }
-    cout << endl;
+    Service::PrintLastMatrix(_stateValues);
+}
+
+void Parking::Manager::PrintLastPolitics()
+{
+    cout << endl << "Politics:" << endl;
+    Service::PrintLastMatrix(_politics);
 }
 

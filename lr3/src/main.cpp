@@ -10,8 +10,8 @@ int main()
     Manager* manager = new Manager();
 
     manager->PrintLastStateValues();
-    manager->GoDay();
-    manager->GoNight();
+    //manager->GoDay();
+    //manager->GoNight();
 
 
 
