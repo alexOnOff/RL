@@ -27,6 +27,8 @@ int16_t Jack::GetCash()
     return _cash;
 }
 
+
+
 uint16_t Jack::TrackCars(Office* source, Office* dest, uint16_t num)
 {
     int i = 0;
@@ -57,4 +59,6 @@ void Jack::GoTrack(vector<vector<int16_t>> states, Office* officeFirst, Office* 
         TrackCars(officeFirst, officeSecond, abs(value));
     }
 }
+
+
 

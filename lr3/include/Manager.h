@@ -19,7 +19,7 @@ namespace Parking
         void GoNight();
         void PrintLastStateValues();
         void PrintLastPolitics();
-        
+        void Study();
 
     private:
         Office* _firstOffice;
@@ -32,6 +32,10 @@ namespace Parking
         const float _Gamma = 0.9f;
         uint16_t _dayNumber = 0;
         const uint16_t _Reward = 10;
+        uint16_t _dayCash = 0;
+        uint16_t _argMax;
+
+        float NewStateValue(uint16_t, uint16_t);
 
     };
 }

@@ -23,5 +23,6 @@ namespace Parking
         int16_t _cash = 0;
         const uint16_t _TrackCost = 2;
         const uint16_t _MaxTrack = 5;
+        
     };
 }
