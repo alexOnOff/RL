@@ -95,13 +95,13 @@
 
 | s     |a | s′ | r |  p(s′, r/s, a) |
 |-------|--|----|---|----------------|
-high|search|high|r_search|0.25
-high|search|low|r_search|0.25
-low|search|high|-3|0.167
-low|search|low|r_search|0.167
-high|wait|high|r_wait|0.5
-low|wait|low|r_wait|0.333
-low|recharge|high|0|0.333
+high|search|high|r_search| α
+high|search|low|r_search|1 - α
+low|search|high|-3|1 - β
+low|search|low|r_search| β
+high|wait|high|r_wait|1
+low|wait|low|r_wait|1
+low|recharge|high|0|1
 
 Точно ли?
 
@@ -133,7 +133,7 @@ G2 = R3 / (1 - γ) = 7 / (1 - 0.9) = 70
 
 G1 = R2 + y*G2 =7 + 0.9 * 70 = 70
 
-G0 = R1 + y*G1 = 2 + 0.9*70 = 69
+G0 = R1 + y*G1 = 2 + 0.9\*70 = 65
 
 ## Обсуждения.Оптимальные стратегии и оптимальные функции ценности
 
