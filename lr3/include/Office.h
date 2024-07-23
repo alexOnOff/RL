@@ -14,6 +14,7 @@ namespace Parking
         void Return();
         void Take(uint16_t);
         void Return(uint16_t);
+        void SetCarNumber(uint16_t);
 
         bool CanTake();
         bool CanReturn();

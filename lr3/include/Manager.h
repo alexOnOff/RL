@@ -28,6 +28,7 @@ namespace Parking
 
         vector<vector<vector<int16_t>>> _politics;
         vector<vector<vector<float>>> _stateValues;
+        vector<vector<vector<int16_t>>> _rewards;
 
         const float _Gamma = 0.9f;
         uint16_t _dayNumber = 0;

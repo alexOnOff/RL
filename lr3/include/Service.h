@@ -10,13 +10,13 @@ namespace Service {
     template<typename T> void InitVectorOfMatrix(vector<vector<vector<T>>>& table, T value, uint16_t rows, uint16_t cols)
     {
         table.resize(1);
-        table.back().resize(rows);
+        table.back().resize(rows + 1);
 
-        for (int i = 0; i < rows; i++)
+        for (int i = 0; i < rows + 1; i++)
         {
-            table.back()[i].resize(cols);
+            table.back()[i].resize(cols + 1);
 
-            for (int j = 0; j < cols; j++)
+            for (int j = 0; j < cols + 1; j++)
             {
                 table.back()[i][j] = value;
             }

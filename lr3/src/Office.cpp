@@ -31,13 +31,13 @@ uint16_t Office::ClientsForDay()
 
     if (wantToTake < _carNumber)
     {
-        Take(wantToTake);
+        //Take(wantToTake);
         return wantToTake;
     }
     else
     {
         auto temp = _carNumber;
-        Take(_carNumber);
+        //Take(_carNumber);
         return temp;
     }
 }
@@ -49,12 +49,12 @@ uint16_t Parking::Office::ReturnCarsForDay()
     if (wantToReturn + _carNumber > _Capacity)
     {
         auto canReturn = _Capacity - _carNumber;
-        Take(canReturn);
+        //Take(canReturn);
         return canReturn;
     }
     else
     {
-        Return(wantToReturn);
+        //Return(wantToReturn);
         return wantToReturn;
     }
 }
@@ -99,6 +99,11 @@ void Office::Return(uint16_t num)
 {
     _carNumber += num;
     if (_carNumber > _Capacity) throw new std::exception("Car number can be more than Capacity!");
+}
+
+void Parking::Office::SetCarNumber(uint16_t state)
+{
+    _carNumber = state;
 }
 
 uint16_t Office::TodayTake()

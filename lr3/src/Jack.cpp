@@ -27,6 +27,11 @@ int16_t Jack::GetCash()
     return _cash;
 }
 
+uint16_t Parking::Jack::GetTrackCost()
+{
+    return _TrackCost;
+}
+
 
 
 uint16_t Jack::TrackCars(Office* source, Office* dest, uint16_t num)
@@ -46,18 +51,20 @@ uint16_t Jack::TrackCars(Office* source, Office* dest, uint16_t num)
     return i;
 }
 
-void Jack::GoTrack(vector<vector<int16_t>> states, Office* officeFirst, Office* officeSecond)
+uint16_t Jack::GoTrack(vector<vector<int16_t>> states, Office* officeFirst, Office* officeSecond)
 {
     auto value = states[officeFirst->GetCarNumber()][officeSecond->GetCarNumber()];
 
     if (value < 0)
     {
-        TrackCars(officeSecond, officeFirst, abs(value));
+        return TrackCars(officeSecond, officeFirst, abs(value));
     }
     else if (value > 0)
     {
-        TrackCars(officeFirst, officeSecond, abs(value));
+        return TrackCars(officeFirst, officeSecond, abs(value));
     }
+
+    return 0;
 }
 
 

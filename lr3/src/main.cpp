@@ -9,13 +9,22 @@ int main()
 {
     Manager* manager = new Manager();
 
-    manager->PrintLastStateValues();
+    manager->PrintLastPolitics();
 
+   // manager->GoDay();
+    manager->Study();
+    manager->Study();
+    manager->Study();
+    manager->Study();
+    manager->Study();
     manager->Study();
 
-    manager->PrintLastStateValues();
     //manager->GoDay();
-    //manager->GoNight();
+
+
+
+
+    manager->PrintLastPolitics();
 
 
 
