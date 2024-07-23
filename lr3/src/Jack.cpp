@@ -46,6 +46,7 @@ uint16_t Jack::TrackCars(Office* source, Office* dest, uint16_t num)
             dest->Return();
             _cash -= _TrackCost;
         }
+        else return i;
     }
 
     return i;
@@ -62,6 +63,20 @@ uint16_t Jack::GoTrack(vector<vector<int16_t>> states, Office* officeFirst, Offi
     else if (value > 0)
     {
         return TrackCars(officeFirst, officeSecond, abs(value));
+    }
+
+    return 0;
+}
+
+uint16_t Parking::Jack::GoTrack(Office* officeFirst, Office* officeSecond, int16_t num)
+{
+    if (num < 0)
+    {
+        return TrackCars(officeSecond, officeFirst, abs(num));
+    }
+    else if (num > 0)
+    {
+        return TrackCars(officeFirst, officeSecond, abs(num));
     }
 
     return 0;

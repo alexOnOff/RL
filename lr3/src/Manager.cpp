@@ -22,9 +22,15 @@ Manager::~Manager()
 void Manager::GoDay()
 {
     _dayCash = 0;
+
+    auto i = _firstOffice->GetCarNumber();
+    auto j = _secondOffice->GetCarNumber();
     // Return cars
-    _firstOffice->ReturnCarsForDay();
-    _secondOffice->ReturnCarsForDay();
+    auto firstReturn = _firstOffice->ReturnCarsForDay();
+    auto secondReturn = _secondOffice->ReturnCarsForDay();
+
+    _firstOffice->SetCarNumber(_firstOffice->GetCarNumber() + firstReturn);
+    _secondOffice->SetCarNumber(_secondOffice->GetCarNumber() + secondReturn);
 
     // Query cars
     auto clientsFirst = _firstOffice->ClientsForDay();
@@ -32,6 +38,7 @@ void Manager::GoDay()
 
     // Give reward
     _dayCash = (clientsFirst + clientsSecond) * _Reward;
+    _rewards.back()[i][j] = _dayCash;
     //auto currentCash = _jack->AddCash();
 
 }
@@ -62,6 +69,7 @@ void Parking::Manager::Study()
 
     newValues.resize(_firstOffice->GetCapacity() + 1);
 
+
     for (int i = 0; i < _firstOffice->GetCapacity() + 1 ; i++)
     {
         newValues[i].resize(_secondOffice->GetCapacity() + 1);
@@ -70,12 +78,16 @@ void Parking::Manager::Study()
         {
             _firstOffice->SetCarNumber(i);
             _secondOffice->SetCarNumber(j);
+
             GoDay();
+
             newValues[i][j] = NewStateValue(i, j);
         }
     }
 
     _stateValues.push_back(newValues);
+
+    //Service::PrintLastMatrix(_rewards);
 }
 
 float Parking::Manager::NewStateValue(uint16_t curFirstOfficeState, uint16_t curSecondOfficeState)
@@ -88,12 +100,14 @@ float Parking::Manager::NewStateValue(uint16_t curFirstOfficeState, uint16_t cur
     
     for (int i = -5; i < 6; i++)
     {
-        
-        auto trackedCars = _jack->GoTrack(_politics.back(), _firstOffice, _secondOffice);
+        _firstOffice->SetCarNumber(curFirstOfficeState);
+        _secondOffice->SetCarNumber(curSecondOfficeState);
 
-        curValue = ((_dayCash - trackedCars * _jack->GetTrackCost()) + _Gamma * _stateValues.back()[_firstOffice->GetCarNumber()][_secondOffice->GetCarNumber()]) / 11;
+        auto trackedCars = _jack->GoTrack(_firstOffice, _secondOffice, i);
 
-        if (curValue > maxValue)
+        curValue = ((_rewards.back()[curFirstOfficeState][curSecondOfficeState] - trackedCars * _jack->GetTrackCost()) + _Gamma * _stateValues.back()[_firstOffice->GetCarNumber()][_secondOffice->GetCarNumber()]) / 11;
+
+        if (curValue >= maxValue)
         {
             _argMax = trackedCars;
             maxValue = curValue;

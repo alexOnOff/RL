@@ -18,7 +18,7 @@ namespace Parking
         uint16_t GetTrackCost();
         uint16_t TrackCars(Office* from, Office* to, uint16_t num);
         uint16_t GoTrack(vector<vector<int16_t>> states, Office* officeFirst, Office* officeSecond);
-        
+        uint16_t GoTrack(Office* officeFirst, Office* officeSecond, int16_t num);
 
     private:
         int16_t _cash = 0;

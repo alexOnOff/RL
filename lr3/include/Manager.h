@@ -20,6 +20,7 @@ namespace Parking
         void PrintLastStateValues();
         void PrintLastPolitics();
         void Study();
+        
 
     private:
         Office* _firstOffice;
