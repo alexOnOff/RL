@@ -8,12 +8,12 @@ using namespace Parking;
 int main()
 {
     Manager* manager = new Manager();
-    manager->PrintProbabilities();
+    //manager->PrintProbabilities();
     
     //manager->PrintLastPolitics();
 
-    //manager->Study();
-    //manager->PrintLastStateValues();
+    manager->Study();
+    manager->PrintLastStateValues();
     //manager->PrintLastPolitics();
     //manager->Study();
     //manager->PrintLastPolitics();

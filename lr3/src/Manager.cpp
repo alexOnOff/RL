@@ -127,6 +127,12 @@ float Parking::Manager::NewStateValue(uint16_t curFirstOfficeState, uint16_t cur
     float maxValue = INT_MIN;
     float curValue;
 
+    // night track
+    uint16_t trackedCars = _jack->GoTrack(_politics.back(), _firstOffice, _secondOffice);
+    float rewardForNight = trackedCars * _jack->GetTrackCost();
+
+    // TODO: NUM_OF_CARS_FIRST_LOC
+
     for (int firstRent = 0; firstRent < _firstOffice->GetCapacity() + 1; firstRent++)
     {
         for (int secondRent = 0; secondRent < _firstOffice->GetCapacity() + 1; secondRent++)
@@ -135,8 +141,8 @@ float Parking::Manager::NewStateValue(uint16_t curFirstOfficeState, uint16_t cur
             float firstProbRent = _firstOffice->GetProbabilityRent(firstRent);
             float secondProbRent = _secondOffice->GetProbabilityRent(secondRent);
 
-            _firstOffice->SetCarNumber(curFirstOfficeState);
-            _secondOffice->SetCarNumber(curSecondOfficeState);
+            //_firstOffice->SetCarNumber(curFirstOfficeState);
+            //_secondOffice->SetCarNumber(curSecondOfficeState);
 
             if(firstProbRent < 0.001 ||  secondProbRent < 0.001 ) continue;
 
@@ -144,13 +150,9 @@ float Parking::Manager::NewStateValue(uint16_t curFirstOfficeState, uint16_t cur
             uint16_t rentedFirst = _firstOffice->TryRent(firstRent);
             uint16_t rentedSecond = _secondOffice->TryRent(secondRent);
 
-            // night track
-            uint16_t trackedCars = _jack->GoTrack(_politics.back(), _firstOffice, _secondOffice);
-
             // sum reward
             float rewardForDay = (rentedFirst + rentedSecond) * _Reward;
-            float rewardForNight = trackedCars * _jack->GetTrackCost();
-
+            
             auto newStateFirst = _firstOffice->GetCarNumber();
             auto newStateSecond = _secondOffice->GetCarNumber();
             
