@@ -3,25 +3,32 @@
 #include "Manager.h"
 
 
+
 using namespace std;
 using namespace Parking;
 
 int main()
 {
-    Manager* manager = new Manager();
 
-    manager->PrintLastPolitics();
+
+    //cout << Service::PoissonDistribution(3,0) << endl;
+
+    Manager* manager = new Manager();
+    
+
+
+    //manager->PrintLastPolitics();
 
    // manager->GoDay();
 
-    manager->Study();
-    manager->PrintLastPolitics();
-    manager->Study();
-    manager->PrintLastPolitics();
-    manager->Study();
-    manager->PrintLastPolitics();
-    manager->Study();
-    manager->PrintLastPolitics();
+    //manager->Study();
+    //manager->PrintLastPolitics();
+    //manager->Study();
+    //manager->PrintLastPolitics();
+    //manager->Study();
+    //manager->PrintLastPolitics();
+    //manager->Study();
+    //manager->PrintLastPolitics();
 
     //manager->Study();
     

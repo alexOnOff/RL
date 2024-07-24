@@ -2,10 +2,14 @@
 
 #include <iostream>
 #include <vector>
+#include <cmath>
 
 using namespace std;
 
 namespace Service {
+
+    int64_t Factorial(int16_t n);
+    float PoissonDistribution(int lambda, int n);
 
     template<typename T> void InitVectorOfMatrix(vector<vector<vector<T>>>& table, T value, uint16_t rows, uint16_t cols)
     {
@@ -22,7 +26,6 @@ namespace Service {
             }
         }
     }
-
 
     template<typename T> void PrintLastMatrix(vector<vector<vector<T>>>& table)
     {

@@ -63,6 +63,37 @@ void Parking::Manager::PrintLastPolitics()
     Service::PrintLastMatrix(_politics);
 }
 
+void Parking::Manager::PrintProbabilities()
+{
+    cout << endl << " FIRST OFFICE RENT " << endl;
+
+    for (int i = 0; i < _firstOffice->GetCapacity() + 1; i++)
+    {
+        cout << _firstOffice->GetProbabilityRent(i) << " " ;
+    }
+
+    cout << endl << " FIRST OFFICE RETURN " << endl;
+
+    for (int i = 0; i < _firstOffice->GetCapacity() + 1; i++)
+    {
+        cout << _firstOffice->GetProbabilityReturn(i) << " ";
+    }
+
+    cout << endl << " SECOND OFFICE RENT " << endl;
+
+    for (int i = 0; i < _firstOffice->GetCapacity() + 1; i++)
+    {
+        cout << _secondOffice->GetProbabilityRent(i) << " ";
+    }
+
+    cout << endl << " SECOND OFFICE RETURN " << endl;
+
+    for (int i = 0; i < _firstOffice->GetCapacity() + 1; i++)
+    {
+        cout << _secondOffice->GetProbabilityReturn(i) << " ";
+    }
+}
+
 void Parking::Manager::Study()
 {
     vector<vector<float>> newValues;

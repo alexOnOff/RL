@@ -9,6 +9,9 @@ Office::Office(uint16_t queryLambda, uint16_t returnLambda)
     _queryDistribution = std::poisson_distribution<uint16_t>(queryLambda);
     _returnDistribution = std::poisson_distribution<uint16_t>(returnLambda);
     gen = std::mt19937(time(NULL));
+
+    _probabilityRent = GenerateProbability(queryLambda);
+    _probabilityReturn = GenerateProbability(returnLambda);
 }
 
 Office::~Office()
@@ -79,6 +82,18 @@ uint16_t Parking::Office::GetCapacity()
     return _Capacity;
 }
 
+float Parking::Office::GetProbabilityRent(uint16_t i)
+{
+    if(i < 0 || i >= _probabilityRent.size()) throw runtime_error("Index out of bounds");
+    return _probabilityRent[i];
+}
+
+float Parking::Office::GetProbabilityReturn(uint16_t i)
+{
+    if (i < 0 || i >= _probabilityReturn.size()) throw runtime_error("Index out of bounds");
+    return _probabilityReturn[i];
+}
+
 void Office::Take()
 {
     _carNumber--;
@@ -114,4 +129,16 @@ uint16_t Office::TodayTake()
 uint16_t Parking::Office::TodayReturn()
 {
     return _returnDistribution(gen);
+}
+
+std::vector<float> Parking::Office::GenerateProbability(uint16_t lambda)
+{
+    std::vector<float> prob(_Capacity + 1);
+
+    for (int i = 0; i < prob.size(); i++)
+    {
+        prob[i] = Service::PoissonDistribution(lambda, i);
+    }
+
+    return prob;
 }

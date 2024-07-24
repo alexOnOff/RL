@@ -19,6 +19,7 @@ namespace Parking
         void GoNight();
         void PrintLastStateValues();
         void PrintLastPolitics();
+        void PrintProbabilities();
         void Study();
         
 

@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <random>
+#include "Service.h"
 
 namespace Parking
 {
@@ -30,12 +31,20 @@ namespace Parking
         uint16_t GetCarNumber();
         uint16_t GetCapacity();
 
+        float GetProbabilityRent(uint16_t i);
+        float GetProbabilityReturn(uint16_t i);
+
     private:
         std::mt19937 gen;
         std::poisson_distribution<uint16_t> _queryDistribution;
         std::poisson_distribution<uint16_t> _returnDistribution;
 
+        std::vector<float> _probabilityRent;
+        std::vector<float> _probabilityReturn;
+
         uint16_t _carNumber;
         const uint16_t _Capacity = 20;
+
+        std::vector<float> GenerateProbability(uint16_t);
     };
 }
