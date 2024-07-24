@@ -2,26 +2,18 @@
 #include "time.h"
 #include "Manager.h"
 
-
-
 using namespace std;
 using namespace Parking;
 
 int main()
 {
-
-
-    //cout << Service::PoissonDistribution(3,0) << endl;
-
     Manager* manager = new Manager();
+    manager->PrintProbabilities();
     
-
-
     //manager->PrintLastPolitics();
 
-   // manager->GoDay();
-
     //manager->Study();
+    //manager->PrintLastStateValues();
     //manager->PrintLastPolitics();
     //manager->Study();
     //manager->PrintLastPolitics();

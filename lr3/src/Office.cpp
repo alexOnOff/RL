@@ -72,6 +72,20 @@ uint16_t Parking::Office::MaxCanReturn()
     return _Capacity - _carNumber;
 }
 
+uint16_t Parking::Office::TryRent(uint16_t uint16_t)
+{
+    auto wantToTake = TodayTake();
+
+    if (uint16_t < _carNumber)
+    {
+        return uint16_t;
+    }
+    else
+    {
+        return _carNumber;
+    }
+}
+
 uint16_t Office::GetCarNumber()
 {
     return _carNumber;
@@ -102,18 +116,19 @@ void Office::Take()
 void Office::Return()
 {
     _carNumber++;
+    if (_carNumber > _Capacity) _carNumber = _Capacity;
 }
 
 void Office::Take(uint16_t num)
 {
     _carNumber -= num;
-    if (_carNumber < 0) throw new std::exception("Car number can be less than 0!");
+    //if (_carNumber < 0) throw new std::exception("Car number can be less than 0!");
 }
 
 void Office::Return(uint16_t num)
 {
     _carNumber += num;
-    if (_carNumber > _Capacity) throw new std::exception("Car number can be more than Capacity!");
+    if(_carNumber > _Capacity) _carNumber = _Capacity;
 }
 
 void Parking::Office::SetCarNumber(uint16_t state)

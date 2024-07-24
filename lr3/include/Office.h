@@ -17,6 +17,7 @@ namespace Parking
         void Return(uint16_t);
         void SetCarNumber(uint16_t);
 
+
         bool CanTake();
         bool CanReturn();
 
@@ -27,6 +28,7 @@ namespace Parking
         uint16_t TodayReturn();
         uint16_t MaxCanTake();
         uint16_t MaxCanReturn();
+        uint16_t TryRent(uint16_t uint16_t);
 
         uint16_t GetCarNumber();
         uint16_t GetCapacity();
