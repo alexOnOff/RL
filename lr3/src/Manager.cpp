@@ -96,84 +96,102 @@ void Parking::Manager::PrintProbabilities()
 
 void Parking::Manager::Study()
 {
-    vector<vector<float>> newValues;
+    //vector<vector<float>> newValues;
 
-    newValues.resize(_firstOffice->GetCapacity() + 1);
+    //newValues.resize(_firstOffice->GetCapacity() + 1);
 
 
     for (int i = 0; i < _firstOffice->GetCapacity() + 1 ; i++)
     {
-        newValues[i].resize(_secondOffice->GetCapacity() + 1);
+        //newValues[i].resize(_secondOffice->GetCapacity() + 1);
 
         for (int j = 0; j < _secondOffice->GetCapacity() + 1; j++)
         {
-            // Scoring of strategy
+            _firstOffice->SetCarNumber(i);
+            _secondOffice->SetCarNumber(j);
 
-            newValues[i][j] = NewStateValue(i, j);
-            //cout << newValues[i][j] << " ";
+            // Scoring of strategy
+            _stateValues.back()[i][j] = NewStateValue(i, j);
+            //newValues[i][j] = NewStateValue(i, j);
+            cout << _stateValues.back()[i][j] << " ";
         }
-        //cout << endl;
+        cout << endl;
     }
 
-    _stateValues.push_back(newValues);
+    //_stateValues.push_back(newValues);
 
     //Service::PrintLastMatrix(_rewards);
 }
 
 float Parking::Manager::NewStateValue(uint16_t curFirstOfficeState, uint16_t curSecondOfficeState)
 {
-    _argMax = -6;
     float sum = 0; 
-    float maxValue = INT_MIN;
-    float curValue;
 
     // night track
-    uint16_t trackedCars = _jack->GoTrack(_politics.back(), _firstOffice, _secondOffice);
-    float rewardForNight = trackedCars * _jack->GetTrackCost();
+    //uint16_t trackedCars = _jack->GoTrack(_politics.back(), _firstOffice, _secondOffice);
+    float rewardForNight = _politics.back()[curFirstOfficeState][curSecondOfficeState] * _jack->GetTrackCost();
 
-    // TODO: NUM_OF_CARS_FIRST_LOC
+    //auto firstMainState = _firstOffice->GetCarNumber();
+    //auto secondMainState = _secondOffice->GetCarNumber();
 
-    for (int firstRent = 0; firstRent < _firstOffice->GetCapacity() + 1; firstRent++)
+    auto firstMainState = std::min<int16_t>(curFirstOfficeState - _politics.back()[curFirstOfficeState][curSecondOfficeState], _firstOffice->GetCapacity());
+    auto secondMainState = std::min<int16_t>(curSecondOfficeState + _politics.back()[curFirstOfficeState][curSecondOfficeState], _secondOffice->GetCapacity());
+
+    for (int16_t firstRent = 0; firstRent < _firstOffice->GetCapacity() + 1; firstRent++)
     {
-        for (int secondRent = 0; secondRent < _firstOffice->GetCapacity() + 1; secondRent++)
+        for (int16_t secondRent = 0; secondRent < _secondOffice->GetCapacity() + 1; secondRent++)
         {
+            auto newStateFirst = firstMainState;
+            auto newStateSecond = secondMainState;
+
             // take probs
             float firstProbRent = _firstOffice->GetProbabilityRent(firstRent);
             float secondProbRent = _secondOffice->GetProbabilityRent(secondRent);
 
-            //_firstOffice->SetCarNumber(curFirstOfficeState);
-            //_secondOffice->SetCarNumber(curSecondOfficeState);
-
-            if(firstProbRent < 0.001 ||  secondProbRent < 0.001 ) continue;
+            //_firstOffice->SetCarNumber(firstMainState);
+            //_secondOffice->SetCarNumber(secondMainState);
 
             // rent cars
-            uint16_t rentedFirst = _firstOffice->TryRent(firstRent);
-            uint16_t rentedSecond = _secondOffice->TryRent(secondRent);
+            int16_t rentedFirst = std::min<int16_t>(newStateFirst, firstRent);
+            int16_t rentedSecond = std::min<int16_t>(newStateSecond, secondRent);
 
             // sum reward
             float rewardForDay = (rentedFirst + rentedSecond) * _Reward;
             
-            auto newStateFirst = _firstOffice->GetCarNumber();
-            auto newStateSecond = _secondOffice->GetCarNumber();
+            newStateFirst =- rentedFirst;
+            newStateSecond =- rentedSecond;
+
             
-            for (int firstReturn = 0; firstReturn < _firstOffice->GetCapacity()  + 1; firstReturn++)
+            for (int16_t firstReturn = 0; firstReturn < _firstOffice->GetCapacity() + 1; firstReturn++)
             {
-                for (int secondReturn = 0; secondReturn < _secondOffice->GetCapacity() + 1; secondReturn++)
+                for (int16_t secondReturn = 0; secondReturn < _secondOffice->GetCapacity() + 1; secondReturn++)
                 {
                     float firstProbReturn = _firstOffice->GetProbabilityReturn(firstReturn);
                     float secondProbReturn = _secondOffice->GetProbabilityReturn(secondReturn);
 
-                    // set current state
-                    _firstOffice->SetCarNumber(newStateFirst);
-                    _secondOffice->SetCarNumber(newStateSecond);
 
-                    // return cars
-                    _firstOffice->Return(firstReturn);
-                    _secondOffice->Return(secondReturn);
+                    auto newStateFirstRet = std::min<int16_t>(newStateFirst + firstReturn, _firstOffice->GetCapacity());
+                    auto newStateSecondRet = std::min<int16_t>(newStateSecond + secondReturn, _secondOffice->GetCapacity());
 
-                    sum += (float)(firstProbRent * firstProbReturn * secondProbRent * secondProbReturn) * 
+
+                    // отрицательное значение не понятно почему
+                    if (newStateFirstRet < 0 || newStateSecondRet < 0)
+                    {
+                        //cout << "ERROR" << endl;
+                        newStateFirstRet = 0;
+                        newStateSecondRet = 0;
+                    }
+                    //// set current state
+                    //_firstOffice->SetCarNumber(newStateFirst);
+                    //_secondOffice->SetCarNumber(newStateSecond);
+
+                    //// return cars
+                    //_firstOffice->Return(firstReturn);
+                    //_secondOffice->Return(secondReturn);
+                    
+                    sum += (firstProbRent * firstProbReturn * secondProbRent * secondProbReturn) * 
                         ((rewardForDay + rewardForNight) + _Gamma * 
-                            _stateValues.back()[_firstOffice->GetCarNumber()][_secondOffice->GetCarNumber()]);
+                            _stateValues.back()[newStateFirstRet][newStateSecondRet]);
 
                 }
             }

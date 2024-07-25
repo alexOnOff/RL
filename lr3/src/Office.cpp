@@ -72,16 +72,16 @@ uint16_t Parking::Office::MaxCanReturn()
     return _Capacity - _carNumber;
 }
 
-uint16_t Parking::Office::TryRent(uint16_t uint16_t)
+uint16_t Parking::Office::TryRent(uint16_t num)
 {
-    auto wantToTake = TodayTake();
-
-    if (uint16_t < _carNumber)
+    if (num < _carNumber)
     {
-        return uint16_t;
+        Take(num);
+        return num;
     }
     else
     {
+        Take(_carNumber);
         return _carNumber;
     }
 }
