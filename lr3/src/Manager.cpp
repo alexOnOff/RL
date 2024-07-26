@@ -96,50 +96,92 @@ void Parking::Manager::PrintProbabilities()
 
 void Parking::Manager::Study()
 {
-    float abs = 0;
-    uint16_t iteration = 0;
 
-    // Scoring of strategy
-    do
+    bool policyStable = true;
+    while (true)
     {
-        cout << "Iteration - " << iteration << "\t Abs = " << abs << endl;
-        abs = 0;
+        float abs = 0;
+        uint16_t iteration = 0;
+
+        // Scoring of strategy
+    
+        do
+        {
+            cout << "Iteration - " << iteration << "\t Abs = " << abs << endl;
+            abs = 0;
+            for (int i = 0; i < _firstOffice->GetCapacity() + 1; i++)
+            {
+                for (int j = 0; j < _secondOffice->GetCapacity() + 1; j++)
+                {
+                    _firstOffice->SetCarNumber(i);
+                    _secondOffice->SetCarNumber(j);
+
+                    auto newValue = NewStateValue(i, j, _politics.back()[i][j]);
+
+                    abs = (std::abs(newValue - _stateValues.back()[i][j]) > abs) ? std::abs(newValue - _stateValues.back()[i][j]) : abs;
+
+                    _stateValues.back()[i][j] = newValue;
+                    //newValues[i][j] = NewStateValue(i, j);
+                    //cout << _stateValues.back()[i][j] << " ";
+                }
+            }
+
+            iteration++;
+        }
+        while (abs > _Theta);
+
+        // Update policy
+
+        float argMaxValue;
+        int16_t argmax;
+        policyStable = true;
+
         for (int i = 0; i < _firstOffice->GetCapacity() + 1; i++)
         {
             for (int j = 0; j < _secondOffice->GetCapacity() + 1; j++)
             {
-                _firstOffice->SetCarNumber(i);
-                _secondOffice->SetCarNumber(j);
+                argMaxValue = INT16_MIN;
+                argmax = 0;
+                auto prevAction = _politics.back()[i][j];
 
-                auto newValue = NewStateValue(i, j);
+                for (int k = -_jack->GetMaxTrack(); k < _jack->GetMaxTrack() + 1; k++)
+                {
+                    if ( ((0 <= k) && (k <= i)) || (( -j <= k) && (k <= 0)))
+                    {
+                        auto newValue = NewStateValue(i, j, k);
 
-                abs = (std::abs(newValue - _stateValues.back()[i][j]) > abs) ? std::abs(newValue - _stateValues.back()[i][j]) : abs;
+                        if (newValue > argMaxValue)
+                        {
+                            argMaxValue = newValue;
+                            argmax = k;
+                        }
+                    }
+                }
 
-                _stateValues.back()[i][j] = newValue;
-                //newValues[i][j] = NewStateValue(i, j);
-                //cout << _stateValues.back()[i][j] << " ";
+                _politics.back()[i][j] = argmax;
+
+                if (policyStable && prevAction != argmax)
+                {
+                    policyStable = false;
+                }
             }
         }
 
-        iteration++;
+        cout << endl <<"NEW POLITICS" << endl;
+        PrintLastPolitics();
+
+        if (policyStable) break;
     }
-    while (abs > _Theta);
-
-   
-
-    //_stateValues.push_back(newValues);
-
-    //Service::PrintLastMatrix(_rewards);
 }
 
-float Parking::Manager::NewStateValue(int16_t curFirstOfficeState, int16_t curSecondOfficeState)
+float Parking::Manager::NewStateValue(int16_t curFirstOfficeState, int16_t curSecondOfficeState, int16_t action)
 {
     float sum = 0; 
 
-    float rewardForNight = _politics.back()[curFirstOfficeState][curSecondOfficeState] * _jack->GetTrackCost();
+    float rewardForNight = action * _jack->GetTrackCost();
 
-    int16_t firstMainState = std::min<int16_t>(curFirstOfficeState - _politics.back()[curFirstOfficeState][curSecondOfficeState], (int16_t)_firstOffice->GetCapacity());
-    int16_t secondMainState = std::min<int16_t>(curSecondOfficeState + _politics.back()[curFirstOfficeState][curSecondOfficeState], (int16_t)_secondOffice->GetCapacity());
+    int16_t firstMainState = std::min<int16_t>(curFirstOfficeState - action, (int16_t)_firstOffice->GetCapacity());
+    int16_t secondMainState = std::min<int16_t>(curSecondOfficeState + action, (int16_t)_secondOffice->GetCapacity());
 
     for (int16_t firstRent = 0; firstRent < _firstOffice->GetCapacity() + 1; firstRent++)
     {

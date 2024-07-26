@@ -37,9 +37,9 @@ namespace Parking
         const uint16_t _Reward = 10;
         uint16_t _dayCash = 0;
         uint16_t _argMax;
-        float _Theta = 0.0004; 
+        float _Theta = 0.004f; 
 
-        float NewStateValue(int16_t, int16_t);
+        float NewStateValue(int16_t, int16_t, int16_t);
 
     };
 }

@@ -32,6 +32,11 @@ uint16_t Parking::Jack::GetTrackCost()
     return _TrackCost;
 }
 
+uint16_t Parking::Jack::GetMaxTrack()
+{
+    return _MaxTrack;
+}
+
 
 
 uint16_t Jack::TrackCars(Office* source, Office* dest, uint16_t num)
