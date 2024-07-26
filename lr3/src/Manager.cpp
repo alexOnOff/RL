@@ -96,60 +96,61 @@ void Parking::Manager::PrintProbabilities()
 
 void Parking::Manager::Study()
 {
-    //vector<vector<float>> newValues;
+    float abs = 0;
+    uint16_t iteration = 0;
 
-    //newValues.resize(_firstOffice->GetCapacity() + 1);
-
-
-    for (int i = 0; i < _firstOffice->GetCapacity() + 1 ; i++)
+    // Scoring of strategy
+    do
     {
-        //newValues[i].resize(_secondOffice->GetCapacity() + 1);
-
-        for (int j = 0; j < _secondOffice->GetCapacity() + 1; j++)
+        cout << "Iteration - " << iteration << "\t Abs = " << abs << endl;
+        abs = 0;
+        for (int i = 0; i < _firstOffice->GetCapacity() + 1; i++)
         {
-            _firstOffice->SetCarNumber(i);
-            _secondOffice->SetCarNumber(j);
+            for (int j = 0; j < _secondOffice->GetCapacity() + 1; j++)
+            {
+                _firstOffice->SetCarNumber(i);
+                _secondOffice->SetCarNumber(j);
 
-            // Scoring of strategy
-            _stateValues.back()[i][j] = NewStateValue(i, j);
-            //newValues[i][j] = NewStateValue(i, j);
-            cout << _stateValues.back()[i][j] << " ";
+                auto newValue = NewStateValue(i, j);
+
+                abs = (std::abs(newValue - _stateValues.back()[i][j]) > abs) ? std::abs(newValue - _stateValues.back()[i][j]) : abs;
+
+                _stateValues.back()[i][j] = newValue;
+                //newValues[i][j] = NewStateValue(i, j);
+                //cout << _stateValues.back()[i][j] << " ";
+            }
         }
-        cout << endl;
+
+        iteration++;
     }
+    while (abs > _Theta);
+
+   
 
     //_stateValues.push_back(newValues);
 
     //Service::PrintLastMatrix(_rewards);
 }
 
-float Parking::Manager::NewStateValue(uint16_t curFirstOfficeState, uint16_t curSecondOfficeState)
+float Parking::Manager::NewStateValue(int16_t curFirstOfficeState, int16_t curSecondOfficeState)
 {
     float sum = 0; 
 
-    // night track
-    //uint16_t trackedCars = _jack->GoTrack(_politics.back(), _firstOffice, _secondOffice);
     float rewardForNight = _politics.back()[curFirstOfficeState][curSecondOfficeState] * _jack->GetTrackCost();
 
-    //auto firstMainState = _firstOffice->GetCarNumber();
-    //auto secondMainState = _secondOffice->GetCarNumber();
-
-    auto firstMainState = std::min<int16_t>(curFirstOfficeState - _politics.back()[curFirstOfficeState][curSecondOfficeState], _firstOffice->GetCapacity());
-    auto secondMainState = std::min<int16_t>(curSecondOfficeState + _politics.back()[curFirstOfficeState][curSecondOfficeState], _secondOffice->GetCapacity());
+    int16_t firstMainState = std::min<int16_t>(curFirstOfficeState - _politics.back()[curFirstOfficeState][curSecondOfficeState], (int16_t)_firstOffice->GetCapacity());
+    int16_t secondMainState = std::min<int16_t>(curSecondOfficeState + _politics.back()[curFirstOfficeState][curSecondOfficeState], (int16_t)_secondOffice->GetCapacity());
 
     for (int16_t firstRent = 0; firstRent < _firstOffice->GetCapacity() + 1; firstRent++)
     {
         for (int16_t secondRent = 0; secondRent < _secondOffice->GetCapacity() + 1; secondRent++)
         {
-            auto newStateFirst = firstMainState;
-            auto newStateSecond = secondMainState;
+            int16_t newStateFirst = firstMainState;
+            int16_t newStateSecond = secondMainState;
 
             // take probs
             float firstProbRent = _firstOffice->GetProbabilityRent(firstRent);
             float secondProbRent = _secondOffice->GetProbabilityRent(secondRent);
-
-            //_firstOffice->SetCarNumber(firstMainState);
-            //_secondOffice->SetCarNumber(secondMainState);
 
             // rent cars
             int16_t rentedFirst = std::min<int16_t>(newStateFirst, firstRent);
@@ -158,9 +159,8 @@ float Parking::Manager::NewStateValue(uint16_t curFirstOfficeState, uint16_t cur
             // sum reward
             float rewardForDay = (rentedFirst + rentedSecond) * _Reward;
             
-            newStateFirst =- rentedFirst;
-            newStateSecond =- rentedSecond;
-
+            newStateFirst -= rentedFirst;
+            newStateSecond -= rentedSecond;
             
             for (int16_t firstReturn = 0; firstReturn < _firstOffice->GetCapacity() + 1; firstReturn++)
             {
@@ -172,22 +172,6 @@ float Parking::Manager::NewStateValue(uint16_t curFirstOfficeState, uint16_t cur
 
                     auto newStateFirstRet = std::min<int16_t>(newStateFirst + firstReturn, _firstOffice->GetCapacity());
                     auto newStateSecondRet = std::min<int16_t>(newStateSecond + secondReturn, _secondOffice->GetCapacity());
-
-
-                    // отрицательное значение не понятно почему
-                    if (newStateFirstRet < 0 || newStateSecondRet < 0)
-                    {
-                        //cout << "ERROR" << endl;
-                        newStateFirstRet = 0;
-                        newStateSecondRet = 0;
-                    }
-                    //// set current state
-                    //_firstOffice->SetCarNumber(newStateFirst);
-                    //_secondOffice->SetCarNumber(newStateSecond);
-
-                    //// return cars
-                    //_firstOffice->Return(firstReturn);
-                    //_secondOffice->Return(secondReturn);
                     
                     sum += (firstProbRent * firstProbReturn * secondProbRent * secondProbReturn) * 
                         ((rewardForDay + rewardForNight) + _Gamma * 
