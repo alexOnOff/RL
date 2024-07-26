@@ -39,8 +39,6 @@ void Manager::GoDay()
     // Give reward
     _dayCash = (clientsFirst + clientsSecond) * _Reward;
     _rewards.back()[i][j] = _dayCash;
-    //auto currentCash = _jack->AddCash();
-
 }
 
 void Manager::GoNight()
@@ -121,8 +119,6 @@ void Parking::Manager::Study()
                     abs = (std::abs(newValue - _stateValues.back()[i][j]) > abs) ? std::abs(newValue - _stateValues.back()[i][j]) : abs;
 
                     _stateValues.back()[i][j] = newValue;
-                    //newValues[i][j] = NewStateValue(i, j);
-                    //cout << _stateValues.back()[i][j] << " ";
                 }
             }
 
