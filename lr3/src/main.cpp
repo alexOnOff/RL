@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
     }
     else
     {
-        playerTask->WriteValuesInFile("data.txt");
+        playerTask->WriteValuesInFile("data.csv");
     }
 
 

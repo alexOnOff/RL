@@ -4,8 +4,11 @@ PlayerTask::PlayerTask()
 {
     _values = std::vector<float>(_Bank+1);
     _politics = std::vector<uint16_t>(_Bank + 1);
+
+    int size = (int)((_MaxP - _MinP) / _Step) + 1;
+    Service::InitMatrix(_totalValues,0.0f, size, _Bank);
     
-    for (int i = 0; i < _Bank + 1; i++)
+    for (int i = 0; i < _Bank; i++)
     {
         _values[i] = 0;
         _politics[i] = 0;
@@ -20,45 +23,55 @@ PlayerTask::~PlayerTask()
 void PlayerTask::Study()
 {
     float maxAbs = 0.0f;
+    int iter = 0;
 
-    while(true)
+    for (float i = _MinP; i <= _MaxP; i += _Step)
     {
-        maxAbs = 0.0f;
-
-        for (int i = 1; i < _Bank; i++)
+        while (true)
         {
-            float newValue = 0;
-            float maxValue = 0.0f;
-            float prevValue;
-            
+            maxAbs = 0.0f;
 
-            for (int j = 0; j < std::min(i + 1, _Bank - i + 1); j++)
+            for (int i = 1; i < _Bank; i++)
             {
-                _reward = (i+j == _Bank) ? 1 : 0;
-                newValue = _EagleProb*(_reward + _values[i + j]);
-                newValue += ((1 - _EagleProb) * _values[i - j]);
+                float newValue = 0;
+                float maxValue = 0.0f;
+                float prevValue;
 
-                if (newValue > maxValue)
+
+                for (int j = 0; j < std::min(i + 1, _Bank - i + 1); j++)
                 {
-                    maxValue = newValue;
-                    _politics[i] = j;
+                    _reward = (i + j == _Bank) ? 1 : 0;
+                    newValue = _EagleProb * (_reward + _values[i + j]);
+                    newValue += ((1 - _EagleProb) * _values[i - j]);
+
+                    if (newValue >= maxValue)
+                    {
+                        maxValue = newValue;
+                        _politics[i] = j;
+                    }
+
                 }
+
+                prevValue = _values[i];
+                _values[i] = maxValue;
+                _totalValues[iter][i] = maxValue;
+
+                if (maxAbs < std::abs(prevValue - _values[i]))
+                    maxAbs = std::abs(prevValue - _values[i]);
 
             }
 
-            prevValue = _values[i];
-            _values[i] = maxValue;
+            //PrintValues();
 
-            if(maxAbs < std::abs(prevValue - _values[i])) 
-                maxAbs = std::abs(prevValue - _values[i]);
-            
+            if (maxAbs < _Theta)
+                break;
         }
 
-        //PrintValues();
-
-        if (maxAbs < _Theta)
-            break;
-    } 
+        //auto copy = _values.data();
+        //_totalValues.push_back(copy);
+        iter++;
+    }
+    
 }
 
 void PlayerTask::PrintValues()
@@ -83,15 +96,31 @@ void PlayerTask::PrintPolicy()
 
 void PlayerTask::WriteValuesInFile(std::string filename)
 {
-    std::ofstream out;          // поток для записи
+    std::ofstream out;
     out.open(filename);
+
 
     if (out.is_open())
     {
-        for (auto value: _politics)
+
+        for (float i = _MinP; i <= _MaxP; i += _Step)
         {
-            out << value << " ";
+            out << std::setprecision(2) <<  i << ',';
+        }
+
+        //out << endl;
+
+        for (int i = 0; i < _Bank; i++)
+        {
+            int j = 0;
+            out << endl;
+            for (float iter = _MinP; iter <= _MaxP; iter += _Step)
+            {
+                out << std::setprecision(6) << _totalValues[j][i] << ',';
+                j++;
+            }
         }
     }
+
     out.close();
 }

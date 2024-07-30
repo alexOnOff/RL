@@ -3,6 +3,8 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include "Service.h"
+#include <iomanip>
 
 
 class PlayerTask
@@ -23,5 +25,10 @@ private:
     const float _Theta = 0.001f;
     std::vector<float> _values;
     std::vector<uint16_t> _politics;
+    std::vector<std::vector<float>> _totalValues;
+
+    const float _MinP = 0.15f;
+    const float _MaxP = 0.65f;
+    const float _Step = 0.01f;
 };
 
