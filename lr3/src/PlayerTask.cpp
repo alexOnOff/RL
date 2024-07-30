@@ -25,7 +25,7 @@ void PlayerTask::Study()
     float maxAbs = 0.0f;
     int iter = 0;
 
-    for (float i = _MinP; i <= _MaxP; i += _Step)
+    for (float p = _MinP; p <= _MaxP; p += _Step)
     {
         while (true)
         {
@@ -41,8 +41,8 @@ void PlayerTask::Study()
                 for (int j = 0; j < std::min(i + 1, _Bank - i + 1); j++)
                 {
                     _reward = (i + j == _Bank) ? 1 : 0;
-                    newValue = _EagleProb * (_reward + _values[i + j]);
-                    newValue += ((1 - _EagleProb) * _values[i - j]);
+                    newValue = p * (_reward + _values[i + j]);
+                    newValue += ((1 - p) * _values[i - j]);
 
                     if (newValue >= maxValue)
                     {
