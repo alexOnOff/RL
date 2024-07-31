@@ -1,6 +1,6 @@
 # RL
 
-Test new cource "Reinforcement Learning"
+Test new course "Reinforcement Learning"
 
 Ë.ð. 2 
 
