@@ -1,9 +1,3 @@
 #include "Service.h"
 
-Service::Service()
-{
-}
-
-Service::~Service()
-{
-}
+using namespace Service;
