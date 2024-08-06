@@ -40,6 +40,7 @@ void Manager::Study(uint16_t episodes)
             cout << "Lose!" << endl;
         }
 
+        history->PrintInfo();
     }
 }
 
@@ -53,8 +54,8 @@ int16_t Manager::GenerateEpisode(EpisodeHistory* episode)
     _player->SetScore(startScorePlayer);
     _dealer->SetScore(startScoreDealer);
 
-    //cout << "Player score - " << _player->GetScore() << endl;
-    //cout << "Dealer score - " << _dealer->GetScore() << endl;
+    cout << "Player score - " << _player->GetScore() << endl;
+    cout << "Dealer score - " << _dealer->GetScore() << endl;
 
     if(_player->IsWin() && _dealer->IsWin())
     {
@@ -77,7 +78,7 @@ int16_t Manager::GenerateEpisode(EpisodeHistory* episode)
     while (_player->ShouldTake())
     {
         int16_t newCard = _gen() % 10 + 2;
-        //cout << "Player take - " << newCard << endl;
+        cout << "Player take - " << newCard << endl;
 
         // Check Ace
         if(_player->IsPlayingAce() && _Ace == newCard && _player->GetScore() + newCard > _BlackJack)
@@ -85,7 +86,7 @@ int16_t Manager::GenerateEpisode(EpisodeHistory* episode)
                 
         auto prevScore = _player->GetScore();
         _player->AddScore(newCard);
-        //cout << "Player score - " << _player->GetScore() << endl;
+        cout << "Player score - " << _player->GetScore() << endl;
 
         if (_player->IsWin())
         {
@@ -109,12 +110,12 @@ int16_t Manager::GenerateEpisode(EpisodeHistory* episode)
     while (_dealer->ShouldTake())
     {
         int16_t newCard = _gen() % 10 + 2;
-        //cout << "Dealer take - " << newCard << endl;
+        cout << "Dealer take - " << newCard << endl;
 
         
         _dealer->AddScore(newCard);
 
-        //cout << "Dealer score - " << _dealer->GetScore() << endl;
+        cout << "Dealer score - " << _dealer->GetScore() << endl;
 
         if (_dealer->IsWin())
         {

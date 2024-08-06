@@ -53,3 +53,13 @@ void EpisodeHistory::AddStep(uint16_t playerScore, uint16_t dealerScore, bool ac
     _steps++;
 }
 
+void EpisodeHistory::PrintInfo()
+{
+    cout << endl << "========== HISTORY ===========" << endl;
+    for (int i = 0; i < _steps; i++)
+    {
+        cout << "State: " << _playerScores[i] << "-" << _dealerScores[i] << "\t\t Action: " << _actions[i]
+            << "\t\t Reward: " << _rewards[i] << endl;
+    }
+}
+
