@@ -19,8 +19,10 @@ namespace BlackJack
         bool IsPlayingAce();
 
         void SetScore(uint16_t);
+        void AddScore(uint16_t);
         bool ShouldTake();
         bool IsWin();
+        bool IsLose();
 
 
     private:

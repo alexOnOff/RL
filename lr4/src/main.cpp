@@ -6,10 +6,8 @@ using namespace std;
 
 int main()
 {
-    cout << "Hello Lab 4";
-
     Manager* manager = new Manager();
-
+    manager->Study(1);
 
     return 0;
 }

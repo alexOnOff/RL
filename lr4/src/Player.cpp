@@ -37,6 +37,11 @@ void Player::SetScore(uint16_t score)
     _score = score;
 }
 
+void BlackJack::Player::AddScore(uint16_t score)
+{
+    _score += score;
+}
+
 bool Player::ShouldTake()
 {
     return _policy[_score - MinScore];
@@ -45,6 +50,11 @@ bool Player::ShouldTake()
 bool Player::IsWin()
 {
     return _score == MaxScore;
+}
+
+bool BlackJack::Player::IsLose()
+{
+    return _score > MaxScore;
 }
 
 
