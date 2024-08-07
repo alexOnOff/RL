@@ -25,9 +25,14 @@ void Service::WriteValuesInFile(vector<vector<float>>& v, std::string filename)
             int j = 0;
             for (int j = 0; j < v[i].size(); j++)
             {
-                out << std::setprecision(3) << v[j][i] << ' ';
+                out << std::setprecision(3) << v[j][i] ;
+                
+                if(j != v[i].size() - 1)
+                    out << ' ';
             }
-            out << endl;
+
+            if(i != v.size() - 1) out << endl;
+            
         }
     }
 

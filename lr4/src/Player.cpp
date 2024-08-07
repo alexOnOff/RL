@@ -5,7 +5,7 @@ using namespace BlackJack;
 Player::Player()
 {
     _score = 0;
-    _playingAce = false;
+    _playingAce = true;
     _maxTakeScore = 18;
     InitDefaultPolicy(_maxTakeScore);
 }
