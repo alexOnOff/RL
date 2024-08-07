@@ -7,7 +7,9 @@ using namespace std;
 int main()
 {
     Manager* manager = new Manager();
-    manager->Study(1);
-
+    manager->Study(500000);
+    manager->PrintValues();
+    manager->SaveResults();
+    
     return 0;
 }

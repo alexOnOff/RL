@@ -63,3 +63,23 @@ void EpisodeHistory::PrintInfo()
     }
 }
 
+int16_t EpisodeHistory::GetReward(uint16_t index)
+{
+    return _rewards[index];
+}
+
+uint16_t BlackJack::EpisodeHistory::GetPlayerScore(uint16_t index)
+{
+    return _playerScores[index];
+}
+
+uint16_t BlackJack::EpisodeHistory::GetDealerScore(uint16_t index)
+{
+    return _dealerScores[index];
+}
+
+uint16_t BlackJack::EpisodeHistory::GetSteps()
+{
+    return _steps;
+}
+

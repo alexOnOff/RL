@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include <vector>
 
@@ -16,6 +18,13 @@ namespace BlackJack
         void AddStartState(uint16_t, uint16_t, bool);
         void AddStep(uint16_t playerScore, uint16_t dealerScore, bool action, int16_t reward);
         void PrintInfo();
+
+        int16_t GetReward(uint16_t index);
+        uint16_t GetPlayerScore(uint16_t index);
+        uint16_t GetDealerScore(uint16_t index);
+        uint16_t GetSteps();
+
+
 
     private:
         uint16_t _steps;
