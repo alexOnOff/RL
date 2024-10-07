@@ -114,7 +114,6 @@ int16_t Manager::GenerateEpisode(EpisodeHistory* episode)
             return _LoseReward;
         }
 
-        //TODO: update table
         episode->AddStep(prevScore, _dealer->GetScore(), true, _PushReward);
 
     }
